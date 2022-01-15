@@ -27,6 +27,10 @@ struct ContentView: View {
         return Locale.current.currencyCode ?? "USD"
     }
 
+    var currencyFormat: FloatingPointFormatStyle<Double>.Currency {
+        return .currency(code: currencyCode)
+    }
+
     var body: some View {
         NavigationView {
             Form {
@@ -36,7 +40,7 @@ struct ContentView: View {
                     TextField(
                         "Check amount",
                         value: $checkAmount,
-                        format: .currency(code: currencyCode)
+                        format: currencyFormat
                     )
                     .keyboardType(.decimalPad)
                     .focused($amountHasFocus)
@@ -58,11 +62,11 @@ struct ContentView: View {
                 }
 
                 Section("Total with tip:") {
-                    Text(totalWithTip, format: .currency(code: currencyCode))
+                    Text(totalWithTip, format: currencyFormat)
                 }
 
                 Section("Amount per person:") {
-                    Text(amountPerPerson, format: .currency(code: currencyCode))
+                    Text(amountPerPerson, format: currencyFormat)
                 }
             }
             .navigationTitle("WeSplit")
