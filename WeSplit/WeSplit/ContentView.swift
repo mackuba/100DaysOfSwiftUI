@@ -78,8 +78,11 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ContentView()
+            // hax for xcode bug: https://stackoverflow.com/a/70434772
+            ZStack {
+                ContentView()
                 .environment(\.locale, Locale(identifier: "pl"))
+            }
         }
     }
 }
