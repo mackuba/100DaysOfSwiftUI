@@ -44,22 +44,18 @@ struct ContentView: View {
                         }
                     }
                 }
-                
-                Section {
+
+                Section("Tip:") {
                     Picker("Tip percentage", selection: $tipPercentage) {
                         ForEach(tipPercentages, id: \.self) {
                             Text("\($0)%")
                         }
                     }
                     .pickerStyle(.segmented)
-                } header: {
-                    Text("Tip:")
                 }
-                
-                Section {
+
+                Section("Amount per person:") {
                     Text(amountPerPerson, format: .currency(code: currencyCode))
-                } header: {
-                    Text("Amount per person:")
                 }
             }
             .navigationTitle("WeSplit")
