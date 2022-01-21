@@ -17,58 +17,38 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            RadialGradient(
-                gradient: Gradient(stops: [
-                    Gradient.Stop.init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.3),
-                    Gradient.Stop.init(color: Color(red: 0.76, green: 0.15, blue: 0.26), location: 0.3),
-
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color.blue,
+                    Color(red: 0, green: 0, blue: 0.6)
                 ]),
-                center: .top,
-                 startRadius: 200,
-                endRadius: 700
+                startPoint: .top,
+                endPoint: .bottom
             )
             .ignoresSafeArea()
 
-            VStack {
-                Spacer()
+            VStack(spacing: 50) {
+                VStack(spacing: 5) {
+                    Text("Tap the flag of:")
+                    Text(countries[correctAnswer]).font(.title.weight(.semibold))
+                }
+                .foregroundColor(.white)
 
-                Text("Guess the Flag")
-                    .font(.largeTitle.bold())
-                    .foregroundColor(.white)
-
-                VStack(spacing: 30) {
-                    VStack(spacing: 5) {
-                        Text("Tap the flag of:")
-                            .foregroundStyle(.secondary)
-
-                        Text(countries[correctAnswer]).font(.title.weight(.semibold))
-                    }
-
-                    VStack(spacing: 20) {
-                        ForEach(0...2, id: \.self) { i in
-                            Button {
-                                flagTapped(index: i)
-                            } label: {
-                                Image(countries[i])
-                                    .clipShape(Capsule())
-                                    .shadow(radius: 8)
-                            }
+                VStack(spacing: 40) {
+                    ForEach(0...2, id: \.self) { i in
+                        Button {
+                            flagTapped(index: i)
+                        } label: {
+                            Image(countries[i])
+                                .shadow(radius: 8)
                         }
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 20)
-                .background(.regularMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-
-                Spacer()
-                Spacer()
 
                 Text("Score: ???")
                     .foregroundColor(Color(red: 0.75, green: 0.75, blue: 1.0))
                     .font(.callout)
             }
-            .padding()
         }
         .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: pickAnotherFlag)
