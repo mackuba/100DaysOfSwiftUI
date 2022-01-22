@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var currentScore = 0
     @State private var showingScore = false
     @State private var scoreTitle = ""
 
@@ -45,7 +46,7 @@ struct ContentView: View {
                     }
                 }
 
-                Text("Score: ???")
+                Text("Score: \(currentScore)")
                     .foregroundColor(Color(red: 0.75, green: 0.75, blue: 1.0))
                     .font(.callout)
             }
@@ -53,12 +54,18 @@ struct ContentView: View {
         .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: pickAnotherFlag)
         } message: {
-            Text("Your score is ???")
+            Text("Your score is \(currentScore).")
         }
     }
 
     func flagTapped(index: Int) {
-        scoreTitle = (index == correctAnswer) ? "Correct!" : "Wrong"
+        if index == correctAnswer {
+            scoreTitle = "Correct!"
+            currentScore += 1
+        } else {
+            scoreTitle = "Wrong"
+        }
+
         showingScore = true
     }
 
