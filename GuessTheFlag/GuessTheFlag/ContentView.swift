@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    let gameTurns = 10
+
     @State private var currentScore = 0
-    @State private var showingScore = false
-    @State private var scoreTitle = ""
-    @State private var scoreMessage = ""
+    @State private var turnsPlayed = 0
+
+    @State private var showingScoreAlert = false
+    @State private var scoreAlertTitle = ""
+    @State private var scoreAlertMessage = ""
+
+    @State private var showingEndAlert = false
 
     @State var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
 
@@ -52,29 +58,49 @@ struct ContentView: View {
                     .font(.callout)
             }
         }
-        .alert(scoreTitle, isPresented: $showingScore) {
-            Button("Continue", action: pickAnotherFlag)
+
+        .alert(scoreAlertTitle, isPresented: $showingScoreAlert) {
+            Button("Continue") {
+                turnsPlayed += 1
+
+                if turnsPlayed == gameTurns {
+                    showingEndAlert = true
+                } else {
+                    pickAnotherFlag()
+                }
+            }
         } message: {
-            Text(scoreMessage)
+            Text(scoreAlertMessage)
+        }
+
+        .alert("Game Over", isPresented: $showingEndAlert) {
+            Button("Start Again", action: resetGame)
+        } message: {
+            Text("Your final score is \(currentScore)/\(gameTurns).")
         }
     }
 
     func flagTapped(index: Int) {
         if index == correctAnswer {
             currentScore += 1
-            scoreTitle = "Correct!"
-            scoreMessage = "Your score is \(currentScore)."
+            scoreAlertTitle = "Correct!"
+            scoreAlertMessage = "Your score is \(currentScore)."
         } else {
-            scoreTitle = "Wrong"
-            scoreMessage = "That's the flag of \(countries[index])."
+            scoreAlertTitle = "Wrong"
+            scoreAlertMessage = "That's the flag of \(countries[index])."
         }
 
-        showingScore = true
+        showingScoreAlert = true
     }
 
     func pickAnotherFlag() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+    }
+
+    func resetGame() {
+        currentScore = 0
+        pickAnotherFlag()
     }
 }
 
