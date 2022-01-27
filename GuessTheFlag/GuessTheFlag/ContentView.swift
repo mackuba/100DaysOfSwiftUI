@@ -7,6 +7,29 @@
 
 import SwiftUI
 
+struct FlagImage: View {
+    let country: String
+
+    var body: some View {
+        Image(country)
+            .shadow(radius: 8)
+    }
+}
+
+struct FlagScreenBackground: View {
+    var body: some View {
+        LinearGradient(
+            gradient: Gradient(colors: [
+                Color.blue,
+                Color(red: 0, green: 0, blue: 0.6)
+            ]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .ignoresSafeArea()
+    }
+}
+
 struct ContentView: View {
     let gameTurns = 10
 
@@ -25,15 +48,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color.blue,
-                    Color(red: 0, green: 0, blue: 0.6)
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            FlagScreenBackground()
 
             VStack(spacing: 50) {
                 VStack(spacing: 5) {
@@ -47,8 +62,7 @@ struct ContentView: View {
                         Button {
                             flagTapped(index: i)
                         } label: {
-                            Image(countries[i])
-                                .shadow(radius: 8)
+                            FlagImage(country: countries[i])
                         }
                     }
                 }
