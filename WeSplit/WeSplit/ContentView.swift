@@ -7,6 +7,20 @@
 
 import SwiftUI
 
+struct LargeBlueFont: ViewModifier {
+    func body(content: Content) -> some View {
+        return content
+            .font(.largeTitle.weight(.semibold))
+            .foregroundColor(.blue)
+    }
+}
+
+extension View {
+    func largeBlueTitle() -> some View {
+        return self.modifier(LargeBlueFont())
+    }
+}
+
 struct ContentView: View {
     @State private var checkAmount = 0.0
     @State private var numberOfPeople = 2
@@ -34,7 +48,11 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section {}
+                Section {
+                    Text("Split a check")
+                        .largeBlueTitle()
+                }
+                .listRowBackground(Color.clear)
 
                 Section {
                     TextField(
@@ -71,6 +89,7 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("WeSplit")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
